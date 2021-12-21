@@ -1,3 +1,3 @@
-The code contains Prometheus deployment : prom-stack folder
+The code contains Prometheus deployment : prom-stack folder and..
 
-Has applications in folders microsvc/ and springboot/ for Prometheus to scrape metrics using JMX exporter and client libraries micrometer, swagger-stats(nodejs).
+Has sample applications in folders microsvc/ and springboot/ for Prometheus to scrape metrics using JMX exporter and client libraries micrometer, swagger-stats(nodejs).
