@@ -3,7 +3,7 @@ kind: PrometheusRule
 metadata:
   labels:
     prometheus: k8s
-  name: app-prometheus-rules
+  name: app-infra-prometheus-rules
 spec:
   groups:
   - name: infra-alert

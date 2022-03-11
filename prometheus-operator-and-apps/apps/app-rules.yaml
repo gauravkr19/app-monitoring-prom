@@ -6,15 +6,6 @@ metadata:
   name: app-prometheus-rules
 spec:
   groups:
-  - name: email alert
-    rules:
-    - alert: High Pod Memory
-      expr: sum(container_memory_usage_bytes) > 1
-      for: 1m
-      labels:
-        severity: email
-      annotations:
-        summary: High Memory Usage
   - name: Infra-Performance
     rules:
     - alert: ContainerCpuUsage
