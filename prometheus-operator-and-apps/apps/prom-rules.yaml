@@ -9,13 +9,21 @@ spec:
   - name: infra-alert
     rules:
     - alert: CPUThrottlingHigh
-      expr:  sum by(container, pod, namespace) (increase(container_cpu_cfs_throttled_periods_total{container!=""}[5m])) / sum by(container, pod, namespace) (increase(container_cpu_cfs_periods_total[5m])) > (25 / 100)
-      for: 1m
-      labels:
-        severity: email
       annotations:
-        summary: High CPU Usage
-        description: {{ $value | humanizePercentage }} throttling of CPU in namespace {{ $labels.namespace }} for container {{ $labels.container }} in pod {{ $labels.pod }}
+        description: '{{ $value | humanizePercentage }} throttling of CPU in namespace
+          {{ $labels.namespace }} for container {{ $labels.container }} in pod {{
+          $labels.pod }}.'
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/cputhrottlinghigh
+        summary: Processes experience elevated CPU throttling.
+      expr: |
+        sum(increase(container_cpu_cfs_throttled_periods_total{container!="", }[5m])) by (container, pod, namespace)
+          /
+        sum(increase(container_cpu_cfs_periods_total{}[5m])) by (container, pod, namespace)
+          > ( 25 / 100 )
+      for: 15m
+      labels:
+        severity: info
+        
     - alert: KubePodCrashLooping
       annotations:
         description: 'Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container
@@ -27,6 +35,7 @@ spec:
       for: 15m
       labels:
         severity: warning
+
     # See https://medium.com/faun/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d
     - alert: KubePodNotReady
       annotations:
