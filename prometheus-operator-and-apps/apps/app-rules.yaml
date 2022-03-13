@@ -28,36 +28,37 @@ spec:
 
     # This rule can be very noisy in dynamic infra with legitimate container start/stop/deployment.
     - alert: ContainerKilled
-      expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default"} > 60
+      expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default|monitoring"} > 25
       for: 0m
       labels:
         severity: slack
       annotations:
         summary: Container killed (instance {{ $labels.instance }})
-        description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"   
-    - alert: ContainerAbsent
-      expr: absent(container_last_seen)
-      for: 1m
-      labels:
-        severity: slack
-      annotations:
-        summary: Container absent (instance {{ $labels.instance }})
-        description: "A container is absent for 5 min\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
 
-    - alert: 404-Error-micro-app
+    - alert: 404 Error-micro-app
       expr: http_server_requests_seconds_count{exception="None",method="GET",outcome="CLIENT_ERROR",status="404",uri="/**",} > 1
       for: 0m
       labels:
-        severity: slack
+        severity: email
       annotations:
-        summary: 404-Error Hello-world Service  (instance {{ $labels.instance }})
+        summary: 404 Error Hello-world Service  (instance {{ $labels.instance }})
         description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
-    - alert: comicbook endpoint hit
-      expr: api_request_duration_milliseconds_sum{method="GET",path="/comicbooks",code="200"} > 1
+    - alert: 304 comicbook endpoint cache hit
+      expr: api_request_total{method="GET",path="/comicbooks",code="304"} > 1
       for: 0m
       labels:
-        severity: slack
+        severity: email
       annotations:
-        summary: comicbook endpoint hit (instance {{ $labels.instance }})
-        description: "comicbook endpoint hit\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        summary: 304 comicbook endpoint cache hit (instance {{ $labels.instance }})
+        description: "304 comicbook endpoint cache-hit\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: Container-helloApp-Down
+      expr: up{container="hello-app"} == 0
+      for: 0m
+      labels:
+        severity: email
+      annotations:
+        summary: Container Down (instance {{ $labels.instance }})
+        description: "A container is Down\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"        
