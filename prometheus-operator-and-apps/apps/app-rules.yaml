@@ -9,29 +9,29 @@ spec:
   - name: Infra-Performance
     rules:
     - alert: ContainerCpuUsage
-      expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[3m])) BY (instance, name) * 100) > 2
+      expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[3m])) BY (instance, name) * 100) > 50
       for: 1m
       labels:
-        severity: info
+        severity: slack
       annotations:
         summary: Container CPU usage (instance {{ $labels.instance }})
         description: "Container CPU usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
     # See https://medium.com/faun/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d
     - alert: ContainerMemoryUsage
-      expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 2
+      expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 50
       for: 1m
       labels:
-        severity: info
+        severity: slack
       annotations:
         summary: Container Memory usage (instance {{ $labels.instance }})
         description: "Container Memory usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     # This rule can be very noisy in dynamic infra with legitimate container start/stop/deployment.
     - alert: ContainerKilled
-      expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default"} > 3
+      expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default"} > 60
       for: 0m
       labels:
-        severity: info
+        severity: slack
       annotations:
         summary: Container killed (instance {{ $labels.instance }})
         description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"   
@@ -39,7 +39,25 @@ spec:
       expr: absent(container_last_seen)
       for: 1m
       labels:
-        severity: info
+        severity: slack
       annotations:
         summary: Container absent (instance {{ $labels.instance }})
         description: "A container is absent for 5 min\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: 404-Error-micro-app
+      expr: http_server_requests_seconds_count{exception="None",method="GET",outcome="CLIENT_ERROR",status="404",uri="/**",} > 1
+      for: 0m
+      labels:
+        severity: slack
+      annotations:
+        summary: 404-Error Hello-world Service  (instance {{ $labels.instance }})
+        description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: comicbook endpoint hit
+      expr: api_request_duration_milliseconds_sum{method="GET",path="/comicbooks",code="200"} > 1
+      for: 0m
+      labels:
+        severity: slack
+      annotations:
+        summary: comicbook endpoint hit (instance {{ $labels.instance }})
+        description: "comicbook endpoint hit\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
