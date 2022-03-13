@@ -55,7 +55,7 @@ spec:
         description: "304 comicbook endpoint cache-hit\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: Container-helloApp-Down
-      expr: up{container="hello-app"} == 0
+      expr: absent(container_last_seen{name="hello-app"})
       for: 0m
       labels:
         severity: email
