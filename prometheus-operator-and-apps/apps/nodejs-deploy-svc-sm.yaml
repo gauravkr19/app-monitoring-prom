@@ -36,17 +36,4 @@ spec:
           image: gauravkr19/comicbox
           ports:
             - containerPort: 3000
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: nodejs-sm
-spec:
-  endpoints:
-  - interval: 30s
-    path: 'swagger-stats/metrics'
-    port: nodejs
-    scheme: http
-  selector:
-    matchLabels:
-      app: nodejs            
+            
