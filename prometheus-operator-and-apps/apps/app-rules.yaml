@@ -45,14 +45,14 @@ spec:
         summary: 404 Error Hello-world Service  (instance {{ $labels.instance }})
         description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
-    - alert: 304 comicbook endpoint cache hit
-      expr: api_request_total{method="GET",path="/comicbooks",code="304"} > 0
+    - alert: NodejsCPUUsageHigh
+      expr: nodejs_process_cpu_usage_percentage > 0.12
       for: 0m
       labels:
-        severity: slack
+        severity: email
       annotations:
-        summary: 304 comicbook endpoint cache hit (instance {{ $labels.instance }})
-        description: "304 comicbook endpoint cache-hit\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        summary: NodeJS CPU Usage is high (instance {{ $labels.instance }})
+        description: "NodeJS CPU Usage is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: MethodResponseTime
       expr: greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.5",} > 0.0001
