@@ -28,7 +28,7 @@ spec:
 
     # This rule can be very noisy in dynamic infra with legitimate container start/stop/deployment.
     - alert: ContainerKilled
-      expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default|monitoring"} > 25
+      expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default|monitoring"} > 60
       for: 0m
       labels:
         severity: slack
@@ -46,19 +46,19 @@ spec:
         description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: 304 comicbook endpoint cache hit
-      expr: api_request_total{method="GET",path="/comicbooks",code="304"} > 1
+      expr: api_request_total{method="GET",path="/comicbooks",code="304"} > 0
       for: 0m
       labels:
-        severity: email
+        severity: slack
       annotations:
         summary: 304 comicbook endpoint cache hit (instance {{ $labels.instance }})
         description: "304 comicbook endpoint cache-hit\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
-    - alert: Container-helloApp-Down
-      expr: absent(container_last_seen{name="hello-app"})
+    - alert: MethodResponseTime
+      expr: greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.5",} > 0.0001
       for: 0m
       labels:
         severity: email
       annotations:
-        summary: Container Down (instance {{ $labels.instance }})
-        description: "A container is Down\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"        
+        summary: Method greeting response is high (instance {{ $labels.instance }})
+        description: "Method greeting response is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"        
