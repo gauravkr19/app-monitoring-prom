@@ -46,7 +46,7 @@ spec:
         description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: NodejsCPUUsageHigh
-      expr: nodejs_process_cpu_usage_percentage > 0.15
+      expr: nodejs_process_cpu_usage_percentage > 0.17
       for: 0m
       labels:
         severity: email
