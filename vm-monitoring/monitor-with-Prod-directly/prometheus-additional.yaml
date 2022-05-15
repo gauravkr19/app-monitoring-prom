@@ -1,0 +1,10 @@
+- job_name: "prometheus-cadvisor"
+  static_configs:
+  - targets: ["172.31.34.70:8080"]
+- job_name: 'nodejs-app'
+  scrape_interval: 5s
+  metrics_path: /swagger-stats/metrics
+  static_configs:
+  - targets: ['172.31.34.70:3000']
+    labels:
+      group: 'apps'    

@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: prom
+    meta.helm.sh/release-namespace: monitoring
+  creationTimestamp: "2022-05-06T07:52:14Z"
+  labels:
+    app: kube-prometheus-stack-prometheus
+    app.kubernetes.io/instance: prom
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 22.0.0
+    chart: kube-prometheus-stack-22.0.0
+    heritage: Helm
+    release: prom
+    self-monitor: "true"
+  name: prom-kube-prometheus-stack-prometheus
+  namespace: monitoring
+  resourceVersion: "2119918"
+  uid: 21141b63-798a-4eb6-a5d1-ff296edf83df
+spec:
+  clusterIP: 10.106.15.94
+  clusterIPs:
+  - 10.106.15.94
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: web
+    port: 9090
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    app.kubernetes.io/name: prometheus
+    prometheus: prom-kube-prometheus-stack-prometheus
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
