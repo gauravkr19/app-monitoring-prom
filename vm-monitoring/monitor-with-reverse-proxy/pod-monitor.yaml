@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: proxy-pm
+  labels:
+    release: prom  
+spec:
+  #proxyUrl: 'http://192.168.111.50'
+  selector:
+    matchLabels:
+      app: nginx
+  podMetricsEndpoints:
+  - port: nginx
+    path: /swagger-stats/metrics
