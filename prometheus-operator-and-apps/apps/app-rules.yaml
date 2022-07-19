@@ -12,7 +12,8 @@ spec:
       expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[3m])) BY (instance, name) * 100) > 50
       for: 1m
       labels:
-        severity: slack
+        channel: email
+        severity: P1
       annotations:
         summary: Container CPU usage (instance {{ $labels.instance }})
         description: "Container CPU usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
@@ -21,7 +22,7 @@ spec:
       expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 50
       for: 1m
       labels:
-        severity: slack
+        channel: email
       annotations:
         summary: Container Memory usage (instance {{ $labels.instance }})
         description: "Container Memory usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
@@ -31,7 +32,7 @@ spec:
       expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default|monitoring"} > 60
       for: 0m
       labels:
-        severity: slack
+        channel: email
       annotations:
         summary: Container killed (instance {{ $labels.instance }})
         description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
@@ -40,7 +41,7 @@ spec:
       expr: http_server_requests_seconds_count{exception="None",method="GET",outcome="CLIENT_ERROR",status="404",uri="/**",} > 2
       for: 0m
       labels:
-        severity: email
+        channel: email
       annotations:
         summary: 404 Error Hello-world Service  (instance {{ $labels.instance }})
         description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
@@ -49,7 +50,7 @@ spec:
       expr: nodejs_process_cpu_usage_percentage > 0.17
       for: 0m
       labels:
-        severity: email
+        channel: email
       annotations:
         summary: NodeJS CPU Usage is high (instance {{ $labels.instance }})
         description: "NodeJS CPU Usage is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
@@ -58,7 +59,7 @@ spec:
       expr: greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.5",} > 0.0001
       for: 0m
       labels:
-        severity: email
+        channel: email
       annotations:
         summary: Method greeting response is high (instance {{ $labels.instance }})
         description: "Method greeting response is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"        
