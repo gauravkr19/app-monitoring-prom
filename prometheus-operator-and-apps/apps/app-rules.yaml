@@ -13,7 +13,8 @@ spec:
       for: 1m
       labels:
         channel: email
-        severity: P1
+        priority: P1
+        severity: CRITICAL
       annotations:
         summary: Container CPU usage (instance {{ $labels.instance }})
         description: "Container CPU usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
@@ -33,6 +34,8 @@ spec:
       for: 0m
       labels:
         channel: email
+        priority: P2
+        severity: CRITICAL        
       annotations:
         summary: Container killed (instance {{ $labels.instance }})
         description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
@@ -42,6 +45,8 @@ spec:
       for: 0m
       labels:
         channel: email
+        priority: P3
+        severity: PRIORITY        
       annotations:
         summary: 404 Error Hello-world Service  (instance {{ $labels.instance }})
         description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
@@ -51,6 +56,8 @@ spec:
       for: 0m
       labels:
         channel: email
+        priority: P4
+        severity: NORMAL        
       annotations:
         summary: NodeJS CPU Usage is high (instance {{ $labels.instance }})
         description: "NodeJS CPU Usage is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
@@ -60,6 +67,8 @@ spec:
       for: 0m
       labels:
         channel: email
+        priority: P3
+        severity: PRIORITY        
       annotations:
         summary: Method greeting response is high (instance {{ $labels.instance }})
         description: "Method greeting response is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"        
