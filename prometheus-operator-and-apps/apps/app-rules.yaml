@@ -13,20 +13,20 @@ spec:
       for: 1m
       labels:
         channel: email
-        priority: P1
-        severity: CRITICAL
+        severity: critical
       annotations:
         summary: Container CPU usage (instance {{ $labels.instance }})
-        description: "Container CPU usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: "Severity = {{ $labels.severity }} Container CPU usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
     # See https://medium.com/faun/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d
     - alert: ContainerMemoryUsage
       expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 50
       for: 1m
       labels:
         channel: email
+        severity: critical
       annotations:
         summary: Container Memory usage (instance {{ $labels.instance }})
-        description: "Container Memory usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: "Severity = {{ $labels.severity }} Container Memory usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     # This rule can be very noisy in dynamic infra with legitimate container start/stop/deployment.
     - alert: ContainerKilled
@@ -34,41 +34,37 @@ spec:
       for: 0m
       labels:
         channel: email
-        priority: P2
-        severity: CRITICAL        
+        severity: critical        
       annotations:
         summary: Container killed (instance {{ $labels.instance }})
-        description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
+        description: "Severity = {{ $labels.severity }}  A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
 
     - alert: 404 Error-micro-app
       expr: http_server_requests_seconds_count{exception="None",method="GET",outcome="CLIENT_ERROR",status="404",uri="/**",} > 2
       for: 0m
       labels:
         channel: email
-        priority: P3
-        severity: PRIORITY        
+        severity: normal        
       annotations:
         summary: 404 Error Hello-world Service  (instance {{ $labels.instance }})
-        description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: "Severity = {{ $labels.severity }}  Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: NodejsCPUUsageHigh
       expr: nodejs_process_cpu_usage_percentage > 0.17
       for: 0m
       labels:
         channel: email
-        priority: P4
-        severity: NORMAL        
+        severity: normal        
       annotations:
         summary: NodeJS CPU Usage is high (instance {{ $labels.instance }})
-        description: "NodeJS CPU Usage is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: "Severity = {{ $labels.severity }}  NodeJS CPU Usage is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: MethodResponseTime
       expr: greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.5",} > 0.0001
       for: 0m
       labels:
         channel: email
-        priority: P3
-        severity: PRIORITY        
+        severity: priority        
       annotations:
         summary: Method greeting response is high (instance {{ $labels.instance }})
-        description: "Method greeting response is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"        
+        description: "Severity = {{ $labels.severity }}  Method greeting response is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"        
