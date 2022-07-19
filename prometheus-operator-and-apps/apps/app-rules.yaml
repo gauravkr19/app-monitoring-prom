@@ -37,7 +37,7 @@ spec:
         severity: P1        
       annotations:
         summary: Container killed (instance {{ $labels.instance }})
-        description: "{{ $labels.severity }}  A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
+        description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
 
     - alert: 404 Error-micro-app
       expr: http_server_requests_seconds_count{exception="None",method="GET",outcome="CLIENT_ERROR",status="404",uri="/**",} > 2
@@ -47,7 +47,7 @@ spec:
         severity: P3        
       annotations:
         summary: 404 Error Hello-world Service  (instance {{ $labels.instance }})
-        description: "{{ $labels.severity }}  Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: NodejsCPUUsageHigh
       expr: nodejs_process_cpu_usage_percentage > 0.17
@@ -57,7 +57,7 @@ spec:
         severity: P3        
       annotations:
         summary: NodeJS CPU Usage is high (instance {{ $labels.instance }})
-        description: "{{ $labels.severity }}  NodeJS CPU Usage is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: "NodeJS CPU Usage is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: MethodResponseTime
       expr: greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.5",} > 0.0001
