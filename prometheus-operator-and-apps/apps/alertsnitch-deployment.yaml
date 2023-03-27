@@ -1,0 +1,67 @@
+# alertsnitch-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertsnitch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: alertsnitch    
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: alertsnitch
+    spec:
+      containers:
+      - image: registry.gitlab.com/yakshaving.art/alertsnitch
+        name: alertsnitch
+        ports:
+        - containerPort: 5432
+          name: http
+        env:
+        - name: PGUSER
+          value: alertsnitch
+        - name: PGPASSWORD
+          value: alertsnitch
+        - name: PGHOST
+          value: postgresql.monitoring.svc.cluster.local
+        - name: PGDATABASE
+          value: alertsnitch
+        - name: ALERTSNITCH_BACKEND
+          value: "postgres"
+        - name: ALERTSNITCH_ADDR
+          value: ':5432'
+        - name: ALERTSNITCH_DSN
+          value: "sslmode=disable user=alertsnitch password=alertsnitch host=postgresql.monitoring.svc.cluster.local database=alertsnitch"
+        # readinessProbe:
+        #   httpGet:
+        #     path: /-/ready
+        #     port: 5432
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: /-/health
+        #     port: 5432
+        #   initialDelaySeconds: 60
+        #   periodSeconds: 10
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2Gi
+          limits:
+            cpu: "1"
+            memory: 2Gi          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertsnitch
+spec:
+  ports:
+  - name: http
+    port: 5432
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: alertsnitch
