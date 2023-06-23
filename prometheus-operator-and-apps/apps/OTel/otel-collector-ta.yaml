@@ -1,0 +1,31 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: collector-with-ta
+spec:
+  mode: statefulset
+  targetAllocator:
+    enabled: true  
+    serviceAccount: opentelemetry-targetallocator-sa
+    prometheusCR:
+      enabled: true  
+  config: |
+    receivers:
+      prometheus:
+        config:
+          scrape_configs:
+          - job_name: 'blackbox-exporter'
+        target_allocator:
+          endpoint: http://blackbox-exporter
+          interval: 30s
+          collector_id: "${POD_NAME}"
+
+    exporters:
+      logging:
+
+    service:
+      pipelines:
+        metrics:
+          receivers: [prometheus]
+          processors: []
+          exporters: [logging]
