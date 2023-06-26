@@ -8,27 +8,29 @@ spec:
   groups:
   - name: Infra-Performance
     rules:
-    - alert: ContainerCpuUsage
-      expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[3m])) BY (instance, name) * 100) > 10
+    - alert: ContainerCPUPercentageUsage_critical  
+      expr: |
+        ((sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits) by (pod)) * 100 >= 01)      
+      for: 2m
+      labels:
+        apps: web-apps
+        severity: Critical
+        priority: P1
+      annotations:
+        description: "Container {{ $labels.pod }} has high CPU usage VALUE = {{ $value }} %"
+        summary: "High CPU usage by Container {{ $labels.pod }} based on CPU Resource Limits"  
+
+    - alert: ContainerMemoryPercentageUsage_critical  
+      expr: |
+        (sum(container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor",container!="", image!=""}) by (pod) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits) by (pod)  * 100 < 45)
       for: 1m
       labels:
         apps: web-apps
         severity: Critical
         priority: P1
       annotations:
-        summary: Container CPU usage (instance {{ $labels.instance }})
-        description: "{{ $labels.severity }} Container CPU usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-    # See https://medium.com/faun/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d
-    - alert: ContainerMemoryUsage
-      expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 10
-      for: 1m
-      labels:
-        apps: web-apps
-        severity: Critical
-        priority: P1
-      annotations:
-        summary: Container Memory usage (instance {{ $labels.instance }})
-        description: "{{ $labels.severity }} Container Memory usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: "Container {{ $labels.pod }} has high Memory usage VALUE = {{ $value }} %"
+        summary: "High Memory usage by Container {{ $labels.pod }} based on Memory Resource Limits" 
 
     # This rule can be very noisy in dynamic infra with legitimate container start/stop/deployment.
     - alert: ContainerKilled
