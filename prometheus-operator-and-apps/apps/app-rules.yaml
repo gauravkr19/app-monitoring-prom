@@ -12,7 +12,7 @@ spec:
       expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[3m])) BY (instance, name) * 100) > 50
       for: 1m
       labels:
-        apps: app1
+        apps: web-apps
         severity: Critical
       annotations:
         summary: Container CPU usage (instance {{ $labels.instance }})
@@ -22,7 +22,7 @@ spec:
       expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 50
       for: 1m
       labels:
-        apps: app1
+        apps: web-apps
         severity: Critical
       annotations:
         summary: Container Memory usage (instance {{ $labels.instance }})
@@ -33,7 +33,7 @@ spec:
       expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default|monitoring"} > 60
       for: 0m
       labels:
-        apps: app1
+        apps: web-apps
         severity: Critical        
       annotations:
         summary: Container killed (instance {{ $labels.instance }})
@@ -43,7 +43,7 @@ spec:
       expr: http_server_requests_seconds_count{exception="None",method="GET",outcome="CLIENT_ERROR",status="404",uri="/**",} > 2
       for: 0m
       labels:
-        apps: app1
+        apps: web-apps
         severity: Minor       
       annotations:
         summary: 404 Error Hello-world Service  (instance {{ $labels.instance }})
@@ -53,7 +53,7 @@ spec:
       expr: nodejs_process_cpu_usage_percentage > 0.17
       for: 0m
       labels:
-        apps: app1
+        apps: web-apps
         severity: Minor       
       annotations:
         summary: NodeJS CPU Usage is high (instance {{ $labels.instance }})
@@ -63,26 +63,58 @@ spec:
       expr: greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.5",} > 0.0001
       for: 0m
       labels:
-        apps: app1
+        apps: web-apps
         severity: Warning        
       annotations:
         summary: Method greeting response is high (instance {{ $labels.instance }})
-        description: "Method greeting response is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"   
+        description: "Method greeting response is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
+
     - alert: KubernetesPodCrashLooping
       expr: increase(kube_pod_container_status_restarts_total[10m]) > 0
       for: 0m
       labels:
-        apps: app1
-        severity: Major
+        apps: web-apps
+        severity: Critical
       annotations:
         summary: Kubernetes pod crash looping (instance {{ $labels.instance }})      
         description: "Pod {{ $labels.pod }} is crash looping\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
     - alert: KubernetesPodNotHealthy
-      expr: min_over_time(sum by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Unknown|Failed"})[3m:1m]) > 0
+      expr: min_over_time(sum by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Unknown|Failed"})[3m:1s]) > 0
       for: 0m      
       labels:
-        apps: app1
-        severity: Major
+        apps: web-apps
+        severity: Critical
       annotations:
         summary: Kubernetes Pod not healthy (instance {{ $labels.instance }})
         description: "Pod has been in a non-ready state. \n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: KubernetesReplicassetMismatch
+      expr: kube_replicaset_spec_replicas != kube_replicaset_status_ready_replicas
+      for: 0m
+      labels:
+        apps: web-apps
+        severity: Major
+      annotations:
+        summary: Kubernetes ReplicasSet mismatch (instance {{ $labels.instance }})
+        runbook_url: https://confluence-datacenter.du.ae/display/DevOps/Runbook+for+Pod+status+alerts+-+CRP#RunbookforPodstatusalertsCRP-KubernetesReplicassetMismatch
+        description: "Deployment Replicas mismatch\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: KubernetesDeploymentReplicasMismatch
+      expr: kube_deployment_spec_replicas != kube_deployment_status_replicas_available
+      for: 0m
+      labels:
+        apps: web-apps
+        severity: Critical
+      annotations:
+        summary: Kubernetes Deployment replicas mismatch (instance {{ $labels.instance }})
+        runbook_url: https://confluence-datacenter.du.ae/display/DevOps/Runbook+for+Pod+status+alerts+-+CRP#RunbookforPodstatusalertsCRP-KubernetesDeploymentReplicasMismatch
+        description: "Deployment Replicas mismatch\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: KubernetesStatefulsetReplicasMismatch
+      expr: kube_statefulset_status_replicas_ready != kube_statefulset_status_replicas
+      for: 0m
+      labels:
+        apps: web-apps
+        severity: Warning
+      annotations:
+        summary: Kubernetes StatefulSet replicas mismatch (instance {{ $labels.instance }})
+        runbook_url: https://confluence-datacenter.du.ae/display/DevOps/Runbook+for+Pod+status+alerts+-+CRP#RunbookforPodstatusalertsCRP-KubernetesStatefulsetReplicasMismatch
+        description: "A StatefulSet does not match the expected number of replicas.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"   
