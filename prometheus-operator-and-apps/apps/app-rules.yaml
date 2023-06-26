@@ -9,62 +9,68 @@ spec:
   - name: Infra-Performance
     rules:
     - alert: ContainerCpuUsage
-      expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[3m])) BY (instance, name) * 100) > 50
+      expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[3m])) BY (instance, name) * 100) > 10
       for: 1m
       labels:
         apps: web-apps
         severity: Critical
+        priority: P1
       annotations:
         summary: Container CPU usage (instance {{ $labels.instance }})
         description: "{{ $labels.severity }} Container CPU usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
     # See https://medium.com/faun/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d
     - alert: ContainerMemoryUsage
-      expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 50
+      expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 10
       for: 1m
       labels:
         apps: web-apps
         severity: Critical
+        priority: P1
       annotations:
         summary: Container Memory usage (instance {{ $labels.instance }})
         description: "{{ $labels.severity }} Container Memory usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     # This rule can be very noisy in dynamic infra with legitimate container start/stop/deployment.
     - alert: ContainerKilled
-      expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default|monitoring"} > 60
+      expr: time() - container_last_seen{namespace!~"kube-public|kube-system|default|monitoring"} > 10
       for: 0m
       labels:
         apps: web-apps
-        severity: Critical        
+        severity: Critical   
+        priority: P1     
       annotations:
         summary: Container killed (instance {{ $labels.instance }})
         description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
 
     - alert: 404 Error-micro-app
-      expr: http_server_requests_seconds_count{exception="None",method="GET",outcome="CLIENT_ERROR",status="404",uri="/**",} > 2
+      expr: http_server_requests_seconds_count{exception="None",method="GET",outcome="CLIENT_ERROR",status="404",uri="/**",} > 0
       for: 0m
       labels:
         apps: web-apps
-        severity: Minor       
+        severity: Minor
+        priority: P3   
       annotations:
         summary: 404 Error Hello-world Service  (instance {{ $labels.instance }})
         description: "Hello-world Service not available\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: NodejsCPUUsageHigh
-      expr: nodejs_process_cpu_usage_percentage > 0.17
+      expr: nodejs_process_cpu_usage_percentage > 0.11
       for: 0m
       labels:
         apps: web-apps
-        severity: Minor       
+        severity: Minor
+        priority: P3       
       annotations:
         summary: NodeJS CPU Usage is high (instance {{ $labels.instance }})
         description: "NodeJS CPU Usage is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: MethodResponseTime
-      expr: greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.5",} > 0.0001
+      expr: greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.5",} > 0.00001
       for: 0m
       labels:
         apps: web-apps
-        severity: Warning        
+        severity: Warning
+        priority: P4      
       annotations:
         summary: Method greeting response is high (instance {{ $labels.instance }})
         description: "Method greeting response is high\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
@@ -75,6 +81,7 @@ spec:
       labels:
         apps: web-apps
         severity: Critical
+        priority: P1
       annotations:
         summary: Kubernetes pod crash looping (instance {{ $labels.instance }})      
         description: "Pod {{ $labels.pod }} is crash looping\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
@@ -84,6 +91,7 @@ spec:
       labels:
         apps: web-apps
         severity: Critical
+        priority: P1
       annotations:
         summary: Kubernetes Pod not healthy (instance {{ $labels.instance }})
         description: "Pod has been in a non-ready state. \n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
@@ -94,6 +102,7 @@ spec:
       labels:
         apps: web-apps
         severity: Major
+        priority: P2
       annotations:
         summary: Kubernetes ReplicasSet mismatch (instance {{ $labels.instance }})
         runbook_url: https://confluence-datacenter.du.ae/display/DevOps/Runbook+for+Pod+status+alerts+-+CRP#RunbookforPodstatusalertsCRP-KubernetesReplicassetMismatch
@@ -104,6 +113,7 @@ spec:
       labels:
         apps: web-apps
         severity: Critical
+        priority: P1
       annotations:
         summary: Kubernetes Deployment replicas mismatch (instance {{ $labels.instance }})
         runbook_url: https://confluence-datacenter.du.ae/display/DevOps/Runbook+for+Pod+status+alerts+-+CRP#RunbookforPodstatusalertsCRP-KubernetesDeploymentReplicasMismatch
@@ -114,6 +124,7 @@ spec:
       labels:
         apps: web-apps
         severity: Warning
+        priority: P4
       annotations:
         summary: Kubernetes StatefulSet replicas mismatch (instance {{ $labels.instance }})
         runbook_url: https://confluence-datacenter.du.ae/display/DevOps/Runbook+for+Pod+status+alerts+-+CRP#RunbookforPodstatusalertsCRP-KubernetesStatefulsetReplicasMismatch
