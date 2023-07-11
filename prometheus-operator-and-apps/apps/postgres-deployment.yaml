@@ -77,4 +77,4 @@ spec:
     targetPort: 5432
   selector:
     app: postgresql
-  type: ClusterIP
+  type: LoadBalancer
