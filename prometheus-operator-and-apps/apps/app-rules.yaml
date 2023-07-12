@@ -38,8 +38,8 @@ spec:
       for: 0m
       labels:
         apps: web-apps
-        severity: Critical   
-        priority: P1     
+        severity: Warning   
+        priority: P4
       annotations:
         summary: Container killed (instance {{ $labels.instance }})
         description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}" 
@@ -82,8 +82,8 @@ spec:
       for: 0m
       labels:
         apps: web-apps
-        severity: Critical
-        priority: P1
+        severity: Warning
+        priority: P4
       annotations:
         timestamp: >
           time: {{ with query "time()" }}{{ . | first | value | humanizeTimestamp }}{{ end }}         
@@ -94,8 +94,8 @@ spec:
       for: 0m      
       labels:
         apps: web-apps
-        severity: Critical
-        priority: P1
+        severity: Warning
+        priority: P4
       annotations:
         timestamp: >
           time: {{ with query "time()" }}{{ . | first | value | humanizeTimestamp }}{{ end }}      
