@@ -11,7 +11,7 @@ spec:
   ports:
     - port: 3000
       name: nodejs
-      targetPort: 3000
+      targetPort: 3000      
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -36,4 +36,11 @@ spec:
           image: gauravkr19/comicbox
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 10m
+            limits:
+              memory: 90Mi
+              cpu: 30m               
             
