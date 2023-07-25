@@ -1,0 +1,58 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: collector-with-ta
+spec:
+  mode: statefulset
+  targetAllocator:
+    enabled: true
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+      prometheus:
+        config:
+          scrape_configs:
+          - job_name: 'vm-otel-collector'
+            scrape_interval: 10s
+            static_configs:
+            - targets: [ '104.155.113.142:8888' ]
+          - job_name: 'vm-otel-node'
+            scrape_interval: 10s
+            static_configs:
+            - targets: [ '104.155.113.142:9200' ]
+          - job_name: 'vm-otel-postgres'
+            scrape_interval: 10s
+            static_configs:
+            - targets: [ '104.155.113.142:9187' ]                        
+            metric_relabel_configs:
+            - action: labeldrop
+              regex: (id|name)
+              replacement: $$1
+            - action: labelmap
+              regex: label_(.+)
+              replacement: $$1 
+
+    processors:
+      batch:
+
+    exporters:
+      logging:
+      # file:
+      #   path: /data/metrics.json
+
+    service:
+      pipelines:
+        metrics:
+          receivers: [otlp, prometheus]
+          processors: [batch]
+          exporters: [logging]
+
+    # volumes:
+    #   - name: file
+    #     emptyDir: {}
+    # volumeMounts: 
+    #   - name: file
+    #     mountPath: /data
