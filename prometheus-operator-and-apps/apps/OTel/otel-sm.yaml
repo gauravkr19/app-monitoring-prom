@@ -1,7 +1,9 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: micro-sm
+  name: vm-postgres-sm
+  labels:
+    app: postgres
 spec:
   endpoints:
   - interval: 30s
@@ -10,12 +12,14 @@ spec:
     scheme: http
   selector:
     matchLabels:
-      app: micro
+      app: postgres
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: vm-postgres
+  labels:
+    app: postgres  
 spec:
   ports:
     - protocol: TCP
@@ -27,8 +31,11 @@ apiVersion: v1
 kind: Endpoints
 metadata:
   name: vm-postgres
+  labels:
+    app: postgres  
 subsets:
   - addresses:
-      - ip: 104.155.113.142
+      - ip: 104.199.79.234
     ports:
       - port: 9187
+        name: http
