@@ -1,0 +1,14 @@
+FROM postgres:15-alpine
+
+# Need to get coreutils to get the date bash function working properly:
+RUN apk add --update coreutils && rm -rf /var/cache/apk/*
+
+COPY db.d/postgres/0.0.1-bootstrap.sql /docker-entrypoint-initdb.d/0.0.1-bootstrap.sql
+RUN chmod 755  /docker-entrypoint-initdb.d/0.0.1-bootstrap.sql
+
+COPY db.d/postgres/0.1.0-fingerprint.sql /docker-entrypoint-initdb.d/0.1.0-fingerprint.sql
+RUN chmod 755  /docker-entrypoint-initdb.d/0.1.0-fingerprint.sql
+
+
+COPY script.d/bootstrap_postgres.sh /docker-entrypoint-initdb.d/1_bootstrap_postgres.sh
+RUN chmod 755  /docker-entrypoint-initdb.d/1_bootstrap_postgres.sh
