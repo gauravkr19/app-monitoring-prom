@@ -1,0 +1,209 @@
+licenses:
+  - name: "NGIL-CIAM-PosgresDB"
+    version: "12"   
+    po_number: 77658
+    po_expiry_date: "2024-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2024-09-14"
+    eos_date: "2024-12-09"
+    total_capacity: 96
+    current_utilization: 90
+    license_expiry_date: "2024-12-31"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Uqudu"
+    version: "12"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 90
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Forgerock Auth Module External"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Forgerock DS Module External"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Forgerock IG Module External"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Forgerock Id Workflow Module External"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Forgerock Intelligent Access Module External"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Forgerock Lifecycle & Relationship Management External"
+    version: "7.1.0"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Forgerock Self Service Module External"
+    version: "7.1.0"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Forgerock Social Identity Module"
+    version: "7.1.0"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+
+  - name: "CIAM-Forgerock DS Module Internal"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+  - name: "CIAM-Forgerock Identity Sync Module Internal"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+  - name: "CIAM-Forgerock Lifecycle & RM Internal"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+  - name: "CIAM-Forgerock DS Module - Business Partner"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+  - name: "CIAM-Forgerock ID Sync - Business Partner"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+  - name: "CIAM-Forgerock Intelligent Access - Business Partner"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+  - name: "CIAM-Forgerock Lifecycle & RM - Business Partner"
+    version: "NA"   
+    po_number: 77658
+    po_expiry_date: "2199-09-30" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "2199-12-09"
+    eos_date: "2199-12-09"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2024-09-30"
+    vendor_support: "aa@example.com"
+  - name: "NGIL-TIBCO"
+    version: "7.1.1"   
+    po_number: 77658
+    po_expiry_date: "NA" # date in "YYYY-MM-DD"
+    po_renewal_owner: "Du Owner"
+    eol_date: "NA"
+    eos_date: "NA"
+    total_capacity: 6500000
+    current_utilization: 4007896
+    license_expiry_date: "2199-09-30"
+    vendor_support: "aa@example.com"
