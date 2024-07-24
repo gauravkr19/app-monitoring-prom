@@ -1,0 +1,53 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nginx-reverse-proxy-monitor
+  namespace: nginx
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app: nginx-reverse-proxy
+  endpoints:
+  - port: http
+    path: /probe_1
+    interval: 30s
+    relabelings:
+    - sourceLabels: [__metrics_path__]
+      regex: /probe_1
+      targetLabel: url
+      replacement: "https://172.31.96.144:8003"
+  - port: http
+    path: /probe_2
+    interval: 30s
+    relabelings:
+    - sourceLabels: [__metrics_path__]
+      regex: /probe_2
+      targetLabel: url
+      replacement: "http://prometheus.io"
+  - port: http
+    path: /probe_3
+    interval: 30s
+    relabelings:
+    - sourceLabels: [__metrics_path__]
+      regex: /probe_3
+      targetLabel: url
+      replacement: "https://prometheus.io"
+  - port: http
+    path: /probe_4
+    interval: 30s
+    relabelings:
+    - sourceLabels: [__metrics_path__]
+      regex: /probe_4
+      targetLabel: url
+      replacement: "https://google.com"    
+  - port: http
+    path: /probe_5
+    interval: 30s
+    relabelings:
+    - sourceLabels: [__metrics_path__]
+      regex: /probe_5
+      targetLabel: url
+      replacement: "https://ad93359e9b2c.mylabserver.com"
+

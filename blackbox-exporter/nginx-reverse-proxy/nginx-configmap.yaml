@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: nginx
+data:
+  nginx.conf: |
+    events { 
+        worker_connections 1024; 
+    }
+
+    http {
+        server {
+            listen 80;
+
+            # Disable caching
+            proxy_buffering off;
+            proxy_cache off;
+
+            location /probe_1 {
+                proxy_pass http://blackbox-exporter.blackbox.svc.cluster.local:9115/probe?target=https://172.31.96.144:8003&module=http_2xx;
+            }
+
+            location /probe_2 {
+                proxy_pass http://blackbox-exporter.blackbox.svc.cluster.local:9115/probe?target=http://prometheus.io&module=http_2xx;
+            }
+
+            location /probe_3 {
+                proxy_pass http://blackbox-exporter.blackbox.svc.cluster.local:9115/probe?target=https://prometheus.io&module=http_2xx;
+            }
+
+            location /probe_4 {
+                proxy_pass http://blackbox-exporter.blackbox.svc.cluster.local:9115/probe?target=https://google.com&module=http_2xx;
+            }
+
+            location /probe_5 {
+                proxy_pass http://blackbox-exporter.blackbox.svc.cluster.local:9115/probe?target=https://ad93359e9b2c.mylabserver.com&module=http_2xx;
+            }
+        }
+    }

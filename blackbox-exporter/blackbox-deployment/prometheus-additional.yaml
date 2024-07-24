@@ -1,0 +1,19 @@
+- job_name: 'cert-monitor'
+  metrics_path: /probe
+  params:
+    module: [http_2xx]
+  static_configs:
+    - targets:
+      - https://172.31.96.144:8003
+      - http://prometheus.io    
+      - https://prometheus.io    
+      - https://google.com    
+      - https://ad93359e9b2c.mylabserver.com
+
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: blackbox-exporter.blackbox.svc.cluster.local:9115
